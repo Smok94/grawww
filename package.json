@@ -4,8 +4,15 @@
   "description": "simple brower game",
   "main": "index.js",
   "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
-    "mysql": "^2.15.0"
+    "express-handlebars": "^3.0.0",
+    "express-mysql-session": "^1.2.3",
+    "express-session": "^1.15.6",
+    "mysql": "^2.15.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {

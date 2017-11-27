@@ -1,0 +1,49 @@
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Logowanie</h4>
+
+            </div>
+            <div class="modal-body">
+                <div role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#uploadTab" aria-controls="uploadTab" role="tab" data-toggle="tab">Zaloguj</a>
+
+                        </li>
+                        <li role="presentation"><a href="#browseTab" aria-controls="browseTab" role="tab" data-toggle="tab">Załuż konto lokalne</a>
+
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="uploadTab">
+                            <form action="/login" method="post">
+                                Email:<br>
+                                <input type="text" name="username"><br> Hasło:<br>
+                                <input type="text" name="password"><br><br>
+                                <input type="submit" class="btn-success" value="Zaloguj">
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="browseTab">
+                            <form action="/register" method="post">
+                                Email:<br>
+                                <input type="text" name="email"><br> Hasło:<br>
+                                <input type="text" name="password"><br> Powtórz hasło:<br>
+                                <input type="text" name="re-password"><br><br>
+                                <input type="submit" class="btn-danger" value="Zerejestruj">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+    </div>
+</div>

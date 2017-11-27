@@ -1,0 +1,20 @@
+<nav class="navbar navbar-fixed-top navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">WebSiteName</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Główna</a></li>
+            {{#if isLoggedIn}}
+            <li><a href="/profil">Profil</a></li>
+            {{/if}}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            {{#if isLoggedIn}}
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
+            {{else}}
+            <li><a href="" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user"></span> Logowanie</a></li>
+            {{/if}}
+        </ul>
+    </div>
+</nav>
