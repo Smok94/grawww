@@ -17,7 +17,7 @@ module.exports.register = function (req, res) {
                 connection.query('SELECT LAST_INSERT_ID() as user_id', function (error, results, fields) {
                     if (error) throw error;
                     req.login(results[0], function (err) {
-                        res.redirect('/');
+                        res.redirect('/herocreator');
                     })
                 })
             }

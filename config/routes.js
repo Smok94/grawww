@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var registration = require('./../authentication/register.js');
 var passport = require('./../authentication/passport.js');
+var herocreator = require('./../game/createhero.js')
+var connection = require('./database.js');
 
 router.get('/', function (req, res) {
     res.render('home');
@@ -20,16 +22,35 @@ router.get('/logout', function (req, res) {
         res.clearCookie('connect.sid')
         res.redirect('/')
     })
-})
+});
 
 router.get('/profil', blockguest(), function (req, res) {
-    res.render('profil');
+    connection.query('SELECT id FROM user WHERE email = ?', ["2"], function (err, results, fields) {
+        res.render('profil', {
+            id: results[0].id
+        });
+    });
 });
+
+router.get('/herocreator', function (req, res) {
+    if (req.isAuthenticated())
+        connection.query('SELECT * FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
+            if (results.length > 0) res.redirect('/profil');
+            else res.render('herocreator');
+        });
+    else res.redirect('/');
+});
+
+router.post('/createhero', herocreator.create);
 
 function blockguest() {
     return (req, res, next) => {
-        if (req.isAuthenticated()) return next();
-        res.redirect('/')
+        connection.query('SELECT * FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
+            if (req.isAuthenticated()) {
+                if (results.length == 0) res.redirect('/herocreator');
+                else return next();
+            } else res.redirect('/');
+        });
     }
 }
 
