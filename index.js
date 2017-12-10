@@ -38,7 +38,9 @@ app.use(function (req, res, next) {
 
 app.use(express.static(__dirname + '/public'));
 
-app.use(require('./config/routes.js'))
+app.use(require('./config/routes.js'));
+
+require('./game/regeneration.js');
 
 //wystartowanie serwera www
 app.listen(port, function () {

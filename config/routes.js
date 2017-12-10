@@ -25,9 +25,18 @@ router.get('/logout', function (req, res) {
 });
 
 router.get('/profil', blockguest(), function (req, res) {
-    connection.query('SELECT id FROM user WHERE email = ?', ["2"], function (err, results, fields) {
+    connection.query('SELECT * FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
         res.render('profil', {
-            id: results[0].id
+            name: results[0].name,
+            points: results[0].points,
+            energy: results[0].energy,
+            maxenergy: results[0].maxenergy,
+            hp: results[0].hp,
+            maxhp: results[0].maxhp,
+            damage: results[0].damage,
+            armor: results[0].armor,
+            skill: results[0].skill,
+            gold: results[0].gold
         });
     });
 });
