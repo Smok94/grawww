@@ -13,3 +13,9 @@ module.exports.profile = function (socket) {
         });
     }
 };
+
+module.exports.zajecia = function (socket) {
+    if (socket.handshake.session.passport) {
+        var user = socket.handshake.session.passport.user;
+    }
+};

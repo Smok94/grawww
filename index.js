@@ -49,6 +49,7 @@ io.of('/profil').use(sharedsession(session, {
 var iolisteners = require('./config/io.js');
 iolisteners.getIO(io);
 io.of('/profil').on("connection", iolisteners.profile);
+io.of('/zajecia').on("connection", iolisteners.zajecia);
 
 app.use(express.static(__dirname + '/public'));
 
