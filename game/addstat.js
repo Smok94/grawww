@@ -8,8 +8,8 @@ module.exports.add = function (user, data, socket) {
                 var price = maxenergy * 5;
                 if (results[0].gold >= price)
                     connection.query('UPDATE hero SET gold = gold - ?, maxenergy = maxenergy + 1, energy = energy + 1 WHERE user = ?', [price, user], function (error, results, fields) {
-                        connection.query('SELECT energy, maxenergy FROM hero WHERE user = ?', [user], function (error, results, fields) {
-                            socket.emit("addmaxenergy", [results[0].energy, results[0].maxenergy]);
+                        connection.query('SELECT energy, maxenergy, gold FROM hero WHERE user = ?', [user], function (error, results, fields) {
+                            socket.emit("addmaxenergy", [results[0].energy, results[0].maxenergy, results[0].gold]);
                         });
                     });
                 break;
@@ -18,8 +18,8 @@ module.exports.add = function (user, data, socket) {
                 var price = maxhp * 2 - 10;
                 if (results[0].gold >= price)
                     connection.query('UPDATE hero SET gold = gold - ?, maxhp = maxhp + 1, hp = hp + 1 WHERE user = ?', [price, user], function (error, results, fields) {
-                        connection.query('SELECT hp, maxhp FROM hero WHERE user = ?', [user], function (error, results, fields) {
-                            socket.emit("addmaxhp", [results[0].hp, results[0].maxhp]);
+                        connection.query('SELECT hp, maxhp, gold FROM hero WHERE user = ?', [user], function (error, results, fields) {
+                            socket.emit("addmaxhp", [results[0].hp, results[0].maxhp, results[0].gold]);
                         });
                     });
                 break;
@@ -28,8 +28,8 @@ module.exports.add = function (user, data, socket) {
                 var price = damage * 3 + 25;
                 if (results[0].gold >= price)
                     connection.query('UPDATE hero SET gold = gold - ?, damage = damage + 1 WHERE user = ?', [price, user], function (error, results, fields) {
-                        connection.query('SELECT damage FROM hero WHERE user = ?', [user], function (error, results, fields) {
-                            socket.emit("adddamage", results[0].damage);
+                        connection.query('SELECT damage, gold FROM hero WHERE user = ?', [user], function (error, results, fields) {
+                            socket.emit("adddamage", [results[0].damage, results[0].gold]);
                         });
                     });
                 break;
@@ -38,8 +38,8 @@ module.exports.add = function (user, data, socket) {
                 var price = armor * 3 + 25;
                 if (results[0].gold >= price)
                     connection.query('UPDATE hero SET gold = gold - ?, armor = armor + 1 WHERE user = ?', [price, user], function (error, results, fields) {
-                        connection.query('SELECT armor FROM hero WHERE user = ?', [user], function (error, results, fields) {
-                            socket.emit("addarmor", results[0].armor);
+                        connection.query('SELECT armor, gold FROM hero WHERE user = ?', [user], function (error, results, fields) {
+                            socket.emit("addarmor", [results[0].armor, results[0].gold]);
                         });
                     });
                 break;
@@ -48,8 +48,8 @@ module.exports.add = function (user, data, socket) {
                 var price = skill * 3 + 25;
                 if (results[0].gold >= price)
                     connection.query('UPDATE hero SET gold = gold - ?, skill = skill + 1 WHERE user = ?', [price, user], function (error, results, fields) {
-                        connection.query('SELECT skill FROM hero WHERE user = ?', [user], function (error, results, fields) {
-                            socket.emit("addskill", results[0].skill);
+                        connection.query('SELECT skill, gold FROM hero WHERE user = ?', [user], function (error, results, fields) {
+                            socket.emit("addskill", [results[0].skill, results[0].gold]);
                         });
                     });
                 break;

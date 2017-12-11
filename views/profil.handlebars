@@ -2,29 +2,40 @@
 <table class="table table-striped">
     <tbody>
         <tr>
+            <th>Atrybut</th>
+            <th>Wartość(/Max)</th>
+            <th></th>
+            <th>Koszt podniesienia</th>
+        </tr>
+        <tr>
             <th scope="row">Energia</th>
             <td><span class="stat" id="energy"></span>/<span class="stat" id="maxenergy"></span></td>
             <td><button id="addmaxenergy" class="add">+</button></td>
+            <td><span id="penergy" class="price"></span></td>
         </tr>
         <tr>
             <th scope="row">Zdrowie</th>
             <td><span class="stat" id="hp"></span>/<span class="stat" id="maxhp"></span></td>
             <td><button id="addmaxhp" class="add">+</button></td>
+            <td><span id="php" class="price"></span></td>
         </tr>
         <tr>
             <th scope="row">Obrażenia</th>
             <td><span class="stat" id="damage"></span></td>
             <td><button id="adddamage" class="add">+</button></td>
+            <td><span id="pdamage" class="price"></span></td>
         </tr>
         <tr>
             <th scope="row">Pancerz</th>
             <td><span class="stat" id="armor"></span></td>
             <td><button id="addarmor" class="add">+</button></td>
+            <td><span id="parmor" class="price"></span></td>
         </tr>
         <tr>
             <th scope="row">Wyszkolenie</th>
             <td><span class="stat" id="skill"></span></td>
             <td><button id="addskill" class="add">+</button></td>
+            <td><span id="pskill" class="price"></span></td>
         </tr>
         <tr>
             <th scope="row">Złoto</th>
@@ -34,7 +45,15 @@
 
 <script>
     var energy = {{ energy }}, maxenergy = {{ maxenergy }}, hp = {{ hp }}, maxhp = {{ maxhp }}, damage = {{damage}}, armor = {{armor}}, skill = {{skill}}, gold = {{gold}};
-    var socket = io('/profil');
+    var socket = io('/profil');    
+        
+    function setprice() {
+        $("#penergy").text($("#maxenergy").text()*5);
+        $("#php").text($("#maxhp").text()*2-10);
+        $("#pdamage").text($("#damage").text()*3+25);
+        $("#parmor").text($("#armor").text()*3+25);
+        $("#pskill").text($("#skill").text()*3+25);
+    }
     
     function socketio(){
         socket.on("energyupdate", function(data){
@@ -43,24 +62,34 @@
         socket.on("addmaxenergy", function(data){
             $("#energy").text(data[0]);
             $("#maxenergy").text(data[1]);
+            $("#gold").text(data[2]);
             $.notify("Podniesiono Energię do "+data[1],"success");
+            setprice();
         });
         socket.on("addmaxhp", function(data){
             $("#hp").text(data[0]);
             $("#maxhp").text(data[1]);
+            $("#gold").text(data[2]);
             $.notify("Podniesiono Zdrowie do "+data[1],"success");
+            setprice();
         });
         socket.on("adddamage", function(data){
-            $("#damage").text(data);
-            $.notify("Podniesiono Obrażenia do "+data,"success");
+            $("#damage").text(data[0]);
+            $("#gold").text(data[1]);
+            $.notify("Podniesiono Obrażenia do "+data[0],"success");
+            setprice();
         });
         socket.on("addarmor", function(data){
-            $("#armor").text(data);
-            $.notify("Podniesiono Pancerz do "+data,"success");
+            $("#armor").text(data[0]);
+            $("#gold").text(data[1]);
+            $.notify("Podniesiono Pancerz do "+data[0],"success");
+            setprice();
         });
         socket.on("addskill", function(data){
-            $("#skill").text(data);
-            $.notify("Podniesiono Wyszkolenie do "+data,"success");
+            $("#skill").text(data[0]);
+            $("#gold").text(data[1]);
+            $.notify("Podniesiono Wyszkolenie do "+data[0],"success");
+            setprice();
         });
     }
     
@@ -71,6 +100,7 @@
     $(document).ready(function() {
         setvalues();
         socketio();
+        setprice();
     });
 
     $(".add").click(function(e) {

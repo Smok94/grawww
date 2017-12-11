@@ -1,9 +1,45 @@
 <table class="table table-striped">
     <tbody>
+        <tr>
+            <th></th>
+            <th>Zajęcie</th>
+            <th>Szansa powodzenia</th>
+            <th>Koszt energii</th>
+            <th>Nagroda (Złoto)</th>
+        </tr>
         {{#each table}}
         <tr>
-            <td><image src="{{image}}"></image></td>
+            <td>
+                <image src="{{image}}"></image>
+            </td>
             <td>{{name}}</td>
+            <td>{{chance}}%</td>
+            <td>{{energy}}</td>
+            <td>{{gold}}</td>
+            <td><button id="{{id}}" class="gob">Wykonaj</button></td>
         </tr>
         {{/each}}
 </table>
+
+<script>
+    var socket = io('/zajecia');
+
+    function socketio() {
+        socket.on("fail", function(data) {
+            $.notify("Misja zakończona niepowodzeniem");
+        });
+        socket.on("success", function(data) {
+            $.notify("Misja zakończona powodzeniem, zdobyłeś " + data[2] + " złota", "success");
+        });
+    }
+
+    $(document).ready(function() {
+        socketio();
+    });
+
+    $(".gob").click(function(e) {
+        var element = e.target;
+        socket.emit("dojob", $(element).attr("id"));
+    });
+
+</script>

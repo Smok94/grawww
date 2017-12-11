@@ -45,6 +45,9 @@ io.use(sharedsession(session, {
 io.of('/profil').use(sharedsession(session, {
     autoSave: true
 }));
+io.of('/zajecia').use(sharedsession(session, {
+    autoSave: true
+}));
 
 var iolisteners = require('./config/io.js');
 iolisteners.getIO(io);
