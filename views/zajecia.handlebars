@@ -1,3 +1,4 @@
+Energia: <span id="energy">{{hero.0.energy}}</span><br>Złoto: <span id="gold">{{hero.0.gold}}</span><br>
 <table class="table table-striped">
     <tbody>
         <tr>
@@ -7,7 +8,7 @@
             <th>Koszt energii</th>
             <th>Nagroda (Złoto)</th>
         </tr>
-        {{#each table}}
+        {{#each jobs}}
         <tr>
             <td>
                 <image src="{{image}}"></image>
@@ -27,9 +28,12 @@
     function socketio() {
         socket.on("fail", function(data) {
             $.notify("Misja zakończona niepowodzeniem");
+            $("#energy").text(data);
         });
         socket.on("success", function(data) {
             $.notify("Misja zakończona powodzeniem, zdobyłeś " + data[2] + " złota", "success");
+            $("#energy").text(data[0]);
+            $("#gold").text(data[1]);
         });
     }
 

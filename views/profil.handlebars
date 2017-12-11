@@ -32,7 +32,7 @@
             <td><span id="parmor" class="price"></span></td>
         </tr>
         <tr>
-            <th scope="row">Wyszkolenie</th>
+            <th scope="row">Umiejętności</th>
             <td><span class="stat" id="skill"></span></td>
             <td><button id="addskill" class="add">+</button></td>
             <td><span id="pskill" class="price"></span></td>
@@ -88,7 +88,7 @@
         socket.on("addskill", function(data){
             $("#skill").text(data[0]);
             $("#gold").text(data[1]);
-            $.notify("Podniesiono Wyszkolenie do "+data[0],"success");
+            $.notify("Podniesiono Umiejętności do "+data[0],"success");
             setprice();
         });
     }
