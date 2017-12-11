@@ -42,21 +42,19 @@ var sharedsession = require("express-socket.io-session");
 io.use(sharedsession(session, {
     autoSave: true
 }));
+io.of('/profil').use(sharedsession(session, {
+    autoSave: true
+}));
 
-io.on("connection", function (socket) {
-    if (socket.handshake.session.passport) {
-        var user = socket.handshake.session.passport.user;
-        socket.on("test", function (msg) {
-            console.log('message: ' + msg);
-        });
-    }
-});
+var iolisteners = require('./config/io.js');
+iolisteners.getIO(io);
+io.of('/profil').on("connection", iolisteners.profile);
 
 app.use(express.static(__dirname + '/public'));
 
 app.use(require('./config/routes.js'));
 
-require('./game/regeneration.js');
+require('./game/regeneration.js')(io);
 
 //wystartowanie serwera www
 server.listen(port, function () {

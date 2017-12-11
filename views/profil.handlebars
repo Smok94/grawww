@@ -34,6 +34,35 @@
 
 <script>
     var energy = {{ energy }}, maxenergy = {{ maxenergy }}, hp = {{ hp }}, maxhp = {{ maxhp }}, damage = {{damage}}, armor = {{armor}}, skill = {{skill}}, gold = {{gold}};
+    var socket = io('/profil');
+    
+    function socketio(){
+        socket.on("energyupdate", function(data){
+            $("#energy").text(data);
+        });
+        socket.on("addmaxenergy", function(data){
+            $("#energy").text(data[0]);
+            $("#maxenergy").text(data[1]);
+            $.notify("Podniesiono Energię do "+data[1],"success");
+        });
+        socket.on("addmaxhp", function(data){
+            $("#hp").text(data[0]);
+            $("#maxhp").text(data[1]);
+            $.notify("Podniesiono Zdrowie do "+data[1],"success");
+        });
+        socket.on("adddamage", function(data){
+            $("#damage").text(data);
+            $.notify("Podniesiono Obrażenia do "+data,"success");
+        });
+        socket.on("addarmor", function(data){
+            $("#armor").text(data);
+            $.notify("Podniesiono Pancerz do "+data,"success");
+        });
+        socket.on("addskill", function(data){
+            $("#skill").text(data);
+            $.notify("Podniesiono Wyszkolenie do "+data,"success");
+        });
+    }
     
     function setvalues() { $(".stat").attr("id",function(index,currentvalue) {
         $(this).text(eval(currentvalue));
@@ -41,23 +70,12 @@
     
     $(document).ready(function() {
         setvalues();
+        socketio();
     });
 
     $(".add").click(function(e) {
         var element = e.target;
-        $.ajax({
-            type: "POST",
-            url: "/dodajatr",
-            data: {
-                'id': $(element).attr("id")
-            },
-            success: function(result) {
-                $.notify('Podniesiono atrybut ' + result.id + ' do ' + result.amount, "success");
-            },
-            error: function(result) {
-                $.notify('Błąd! Odśwież i spróbuj ponownie');
-            }
-        });
+        socket.emit("addstat", $(element).attr("id"));
     });
 
 </script>

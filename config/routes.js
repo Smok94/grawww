@@ -4,7 +4,6 @@ var registration = require('./../authentication/register.js');
 var passport = require('./../authentication/passport.js');
 var herocreator = require('./../game/createhero.js')
 var connection = require('./database.js');
-var addstat = require('./../game/addstat.js')
 
 router.get('/', function (req, res) {
     res.render('home');
@@ -53,8 +52,6 @@ router.get('/herocreator', function (req, res) {
 
 router.post('/createhero', herocreator.create);
 
-router.post('/dodajatr', blockguest(), addstat.add);
-
 router.get('/ranking', blockguest(), function (req, res) {
     connection.query('SELECT name, points FROM hero', null, function (err, results, fields) {
         results.sort(function (a, b) {
@@ -77,13 +74,15 @@ router.get('/zajecia', blockguest(), function (req, res) {
 
 function blockguest() {
     return (req, res, next) => {
-        connection.query('SELECT * FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
-            if (req.isAuthenticated()) {
+        if (req.isAuthenticated()) {
+            connection.query('SELECT * FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
                 if (results.length == 0) res.redirect('/herocreator');
                 else return next();
-            } else res.redirect('/');
-        });
+
+            });
+        } else res.redirect('/');
     }
 }
+
 
 module.exports = router;
