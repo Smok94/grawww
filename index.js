@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var port = process.env.port || 3000;
+var server = require("http").createServer(app);
 var database = require('./config/database.js');
 var handlebars = require('express-handlebars').create({
     defaultLayout: 'main'
@@ -12,8 +13,13 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-var session = require('express-session');
-var MySQLStore = require('express-mysql-session')(session);
+var session = require('express-session')({
+    secret: 'da82wkaek2',
+    resave: false,
+    store: sessionStore,
+    saveUninitialized: false
+});
+var MySQLStore = require('express-mysql-session')(require('express-session'));
 var sessionStore = new MySQLStore({
     host: DB_HOST,
     port: 3306,
@@ -21,12 +27,7 @@ var sessionStore = new MySQLStore({
     password: DB_PASSWORD,
     database: DB_DATABASE
 });
-app.use(session({
-    secret: 'da82wkaek2',
-    resave: false,
-    store: sessionStore,
-    saveUninitialized: false
-}))
+app.use(session);
 var passport = require('./authentication/passport.js');
 app.use(passport.initialize());
 app.use(passport.session());
@@ -36,6 +37,21 @@ app.use(function (req, res, next) {
     next();
 });
 
+var io = require("socket.io")(server);
+var sharedsession = require("express-socket.io-session");
+io.use(sharedsession(session, {
+    autoSave: true
+}));
+
+io.on("connection", function (socket) {
+    if (socket.handshake.session.passport) {
+        var user = socket.handshake.session.passport.user;
+        socket.on("test", function (msg) {
+            console.log('message: ' + msg);
+        });
+    }
+});
+
 app.use(express.static(__dirname + '/public'));
 
 app.use(require('./config/routes.js'));
@@ -43,6 +59,6 @@ app.use(require('./config/routes.js'));
 require('./game/regeneration.js');
 
 //wystartowanie serwera www
-app.listen(port, function () {
+server.listen(port, function () {
     console.log('Aplikacja działa na porcie ' + port + '!');
 });
