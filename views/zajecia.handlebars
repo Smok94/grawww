@@ -1,4 +1,4 @@
-Energia: <span id="energy">{{hero.0.energy}}</span><br>Złoto: <span id="gold">{{hero.0.gold}}</span><br>
+Energia: <span id="energy">{{hero.0.energy}}</span>/<span id="maxenergy">{{hero.0.maxenergy}}</span><br>Złoto: <span id="gold">{{hero.0.gold}}</span><br>
 <table class="table table-striped">
     <tbody>
         <tr>
@@ -26,6 +26,9 @@ Energia: <span id="energy">{{hero.0.energy}}</span><br>Złoto: <span id="gold">{
     var socket = io('/zajecia');
 
     function socketio() {
+        socket.on("energyupdate", function(data) {
+            $("#energy").text(data);
+        });
         socket.on("fail", function(data) {
             $.notify("Misja zakończona niepowodzeniem");
             $("#energy").text(data);

@@ -67,7 +67,7 @@ router.get('/ranking', blockguest(), function (req, res) {
 router.get('/zajecia', blockguest(), function (req, res) {
     connection.query('SELECT * FROM job', null, function (err, results, fields) {
         var jobs = results;
-        connection.query('SELECT gold, energy FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
+        connection.query('SELECT gold, energy, maxenergy FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
             res.render('zajecia', {
                 jobs: jobs,
                 hero: results

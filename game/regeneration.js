@@ -11,6 +11,15 @@ function engergyRegen(io) {
                 });
             }
         }
+        for (var i in io.nsps['/zajecia'].connected) {
+            var socket = io.nsps['/zajecia'].connected[i];
+            if (socket.handshake.session.passport) {
+                var id = socket.handshake.session.passport.user.user_id;
+                connection.query('SELECT energy FROM hero WHERE user = ?', [id], function (error, results, fields) {
+                    socket.emit("energyupdate", results[0].energy);
+                });
+            }
+        }
     });
 }
 
