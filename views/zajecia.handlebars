@@ -38,6 +38,9 @@ Energia: <span id="energy">{{hero.0.energy}}</span>/<span id="maxenergy">{{hero.
             $("#energy").text(data[0]);
             $("#gold").text(data[1]);
         });
+        socket.on("noenergy", function(data) {
+            $.notify("Za mało energii", "warn");
+        });
     }
 
     $(document).ready(function() {

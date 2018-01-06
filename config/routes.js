@@ -76,6 +76,22 @@ router.get('/zajecia', blockguest(), function (req, res) {
     });
 });
 
+router.get('/walka', blockguest(), function (req, res) {
+    connection.query('SELECT points, gold, energy, maxenergy FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
+        var max = results[0].points+50;
+        var min = results[0].points-50;
+        connection.query('SELECT name, points, attacked FROM hero WHERE user <> ? AND points < ? AND points > ?', [req.user.user_id, max, min], function (err, results, fields) {
+            results.sort(function (a, b) {
+                return a.points < b.points;
+            });
+            results.sort();
+            res.render('walka', {
+                table: results
+            });
+        });
+    });
+});
+
 function blockguest() {
     return (req, res, next) => {
         if (req.isAuthenticated()) {

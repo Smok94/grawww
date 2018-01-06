@@ -23,6 +23,7 @@ module.exports.do = function (user, data, socket) {
                     });
                 }
             }
+            else socket.emit("noenergy");
         });
     });
 }
