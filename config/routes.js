@@ -78,8 +78,8 @@ router.get('/zajecia', blockguest(), function (req, res) {
 
 router.get('/walka', blockguest(), function (req, res) {
     connection.query('SELECT points, gold, energy, maxenergy FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
-        var max = results[0].points+50;
-        var min = results[0].points-50;
+        var max = results[0].points + 50;
+        var min = results[0].points - 50;
         connection.query('SELECT name, points, attacked FROM hero WHERE user <> ? AND points < ? AND points > ?', [req.user.user_id, max, min], function (err, results, fields) {
             results.sort(function (a, b) {
                 return a.points < b.points;
@@ -91,6 +91,17 @@ router.get('/walka', blockguest(), function (req, res) {
         });
     });
 });
+
+router.get('/auth/google', passport.authenticate('google', {
+    scope: ['https://www.googleapis.com/auth/plus.login']
+}));
+
+router.get('/auth/google/callback',
+    passport.authenticate('google'),
+    function (req, res) {
+        res.redirect('/');
+    }
+);
 
 function blockguest() {
     return (req, res, next) => {
