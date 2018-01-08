@@ -1,7 +1,7 @@
-global.DB_HOST = 'localhost';
-global.DB_USER = 'root';
-global.DB_PASSWORD = '';
-global.DB_DATABASE = 'gra';
+global.DB_HOST = 'sql11.freemysqlhosting.net';
+global.DB_USER = 'sql11214724';
+global.DB_PASSWORD = 'lM1s64lQtj';
+global.DB_DATABASE = 'sql11214724';
 
 var mysql = require('mysql');
 var connection = mysql.createConnection({
