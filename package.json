@@ -2,6 +2,9 @@
   "name": "grawww",
   "version": "1.0.0",
   "description": "simple brower game",
+  "engines": {
+    "node": "8.9.1"
+  },
   "main": "index.js",
   "dependencies": {
     "bcrypt": "^1.0.3",
