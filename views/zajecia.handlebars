@@ -16,7 +16,7 @@ Energia: <span id="energy">{{hero.0.energy}}</span>/<span id="maxenergy">{{hero.
             <td>{{name}}</td>
             <td>{{chance}}%</td>
             <td>{{energy}}</td>
-            <td>{{gold}}</td>
+            <td>{{calc gold multipler ../hero.0.points}}</td>
             <td><button id="{{id}}" class="gob">Wykonaj</button></td>
         </tr>
         {{/each}}

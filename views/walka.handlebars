@@ -1,14 +1,60 @@
+Punkty: <span id="points">{{hero.0.points}}</span><br>
+Energia: <span id="energy">{{hero.0.energy}}</span>/<span id="maxenergy">{{hero.0.maxenergy}}</span><br>
+Zdrowie: <span id="hp">{{hero.0.hp}}</span>/<span id="maxhp">{{hero.0.maxhp}}</span><br>Złoto: <span id="gold">{{hero.0.gold}}</span><br>
 <table class="table table-striped">
     <tbody>
        <tr>
             <th>Gracz</th>
             <th>Punkty</th>
-            <th>Czas ochrony</th>
+            <th>Walka</th>
         </tr>
         {{#each table}}
         <tr>
             <td>{{name}}</td>
             <td>{{points}}</td>
+            <td><button id="{{name}}" class="gob">Walcz</button></td>
         </tr>
         {{/each}}
 </table>
+
+
+<script>
+    var socket = io('/walka');
+
+    function socketio() {
+        socket.on("energyupdate", function(data) {
+            $("#energy").text(data);
+        });
+        socket.on("hpupdate", function(data){
+            $("#hp").text(data);
+        });
+        socket.on("draw", function(data) {
+            $.notify("Remis.", "warn");
+        });
+        socket.on("win", function(data) {
+            $.notify("Zwycięstwo. Zdobyto "+data[0]+" punktów i "+data[1]+" złota.", "success");
+        });
+         socket.on("lose", function(data) {
+            $.notify("Porażka. Stracono "+data+" punktów.");
+        });
+        socket.on("noenergy", function(data) {
+            $.notify("Za mało energii", "warn");
+        });
+        socket.on("statusupdate", function(data) {
+            $("#points").text(data[0]);
+            $("#energy").text(data[1]);
+            $("#hp").text(data[2]);
+            $("#gold").text(data[3]);
+        });
+    }
+
+    $(document).ready(function() {
+        socketio();
+    });
+
+    $(".gob").click(function(e) {
+        var element = e.target;
+        socket.emit("fight", $(element).attr("id"));
+    });
+
+</script>

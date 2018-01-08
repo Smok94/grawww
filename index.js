@@ -48,11 +48,15 @@ io.of('/profil').use(sharedsession(session, {
 io.of('/zajecia').use(sharedsession(session, {
     autoSave: true
 }));
+io.of('/walka').use(sharedsession(session, {
+    autoSave: true
+}));
 
 var iolisteners = require('./config/io.js');
 iolisteners.getIO(io);
 io.of('/profil').on("connection", iolisteners.profile);
 io.of('/zajecia').on("connection", iolisteners.zajecia);
+io.of('/walka').on("connection", iolisteners.walka);
 
 app.use(express.static(__dirname + '/public'));
 

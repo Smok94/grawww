@@ -67,26 +67,31 @@ router.get('/ranking', blockguest(), function (req, res) {
 router.get('/zajecia', blockguest(), function (req, res) {
     connection.query('SELECT * FROM job', null, function (err, results, fields) {
         var jobs = results;
-        connection.query('SELECT gold, energy, maxenergy FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
+        connection.query('SELECT points, gold, energy, maxenergy FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
             res.render('zajecia', {
                 jobs: jobs,
-                hero: results
+                hero: results,
+                helpers : {
+                    calc: function(a,b,c) {return a + Math.floor(b * c)}
+                }
             });
         });
     });
 });
 
 router.get('/walka', blockguest(), function (req, res) {
-    connection.query('SELECT points, gold, energy, maxenergy FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
+    connection.query('SELECT * FROM hero WHERE user = ?', [req.user.user_id], function (err, results, fields) {
+        var hero = results;
         var max = results[0].points + 50;
         var min = results[0].points - 50;
-        connection.query('SELECT name, points, attacked FROM hero WHERE user <> ? AND points < ? AND points > ?', [req.user.user_id, max, min], function (err, results, fields) {
+        connection.query('SELECT name, points FROM hero WHERE user <> ? AND points < ? AND points > ?', [req.user.user_id, max, min], function (err, results, fields) {
             results.sort(function (a, b) {
                 return a.points < b.points;
             });
             results.sort();
             res.render('walka', {
-                table: results
+                table: results,
+                hero: hero
             });
         });
     });
@@ -99,7 +104,7 @@ router.get('/auth/google', passport.authenticate('google', {
 router.get('/auth/google/callback',
     passport.authenticate('google'),
     function (req, res) {
-        res.redirect('/');
+        res.redirect('/profil');
     }
 );
 
