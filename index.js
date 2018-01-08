@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var port = process.env.port || 3000;
 var server = require("http").createServer(app);
 var database = require('./config/database.js');
 var handlebars = require('express-handlebars').create({
