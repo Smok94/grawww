@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express();
-var port = process.env.port || 3000;
 var server = require("http").createServer(app);
 var database = require('./config/database.js');
 var handlebars = require('express-handlebars').create({
@@ -65,6 +64,6 @@ app.use(require('./config/routes.js'));
 require('./game/regeneration.js')(io);
 
 //wystartowanie serwera www
-server.listen(port, function () {
+server.listen(process.env.PORT || 3000, function () {
     console.log('Aplikacja działa na porcie ' + port + '!');
 });
